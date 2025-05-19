@@ -1,5 +1,61 @@
-# Ensure ruleta and dt are defined
+import pygame
+
+# Initialize Pygame
+pygame.init()
+
+# Constants
+NEGRO = (0, 0, 0)
+BLANCO = (255, 255, 255)
+ancho = 800
+alto = 600
+
+# Initialize display
+pantalla = pygame.display.set_mode((ancho, alto))
+capa_transparente = pygame.Surface((ancho, alto), pygame.SRCALPHA)
+
+# Initialize fonts
+fuente = pygame.font.Font(None, 36)
+fuente_pequeña = pygame.font.Font(None, 24)
+
+# Game variables
+fondo = None  # Replace with actual background image if needed
+mostrar_instrucciones = True
+instrucciones = ["Línea 1 de instrucciones", "Línea 2 de instrucciones"]
+tiempo_inicio = pygame.time.get_ticks()
+
+# Create mesa object (assuming it's a class similar to Ruleta and Bola)
+class Mesa:
+    def dibujar(self, superficie):
+        pass
+
+mesa = Mesa()
+
+# Define the Ruleta class
+class Ruleta:
+    def __init__(self):
+        pass  # Initialize any attributes here
+
+    def actualizar(self, dt):
+        pass  # Add logic to update the state of the ruleta
+
+    def dibujar(self, superficie):
+        pass  # Add drawing logic here
+
+# Define the Bola class
+class Bola:
+    def __init__(self):
+        pass  # Initialize any attributes here
+
+    def actualizar(self, dt):
+        pass  # Replace with actual update logic
+
+    def dibujar(self, superficie):
+        pass  # Add drawing logic here
+
+# Ensure ruleta, dt, and tiempo_sin_actividad are defined
 dt = 0.016  # Example delta time (16 ms for ~60 FPS)
+tiempo_sin_actividad = 0  # Initialize tiempo_sin_actividad to 0
+fade_in = True  # Initialize fade_in for the initial fade effect
 ruleta = Ruleta()  # Replace with the actual initialization of the ruleta object
 ruleta.actualizar(dt)
 bola = Bola()  # Replace with the actual initialization of the bola object
@@ -9,6 +65,8 @@ bola.actualizar(dt)
 tiempo_sin_actividad += dt / 1000
 
 # Fade in inicial
+if 'alpha_overlay' not in locals():
+    alpha_overlay = 255  # Initialize alpha_overlay with a starting value
 if fade_in:
     alpha_overlay -= 5
     if alpha_overlay <= 0:
@@ -53,18 +111,7 @@ elif tiempo_sin_actividad > 10 and tiempo_sin_actividad < 15:
 pantalla.blit(capa_transparente, (0, 0))
 
 # Efecto fade-in inicial
-if alpha_overlay > 0:
-    overlay = pygame.Surface((ancho, alto))
-    overlay.fill(NEGRO)
-    overlay.set_alpha(alpha_overlay)
-    pantalla.blit(overlay, (0, 0))
-
-# Mostrar información de FPS en modo desarrollo
-fps = reloj.get_fps()
-texto_fps = fuente_pequeña.render(f"FPS: {fps:.1f}", True, BLANCO)
-pantalla.blit(texto_fps, (10, 10))
-
-# Actualizar pantalla
+# Cleanup section
 pygame.display.flip()
 
 # Tiempo de procesamiento para mantener constante los FPS
